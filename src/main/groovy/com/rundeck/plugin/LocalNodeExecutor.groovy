@@ -24,6 +24,7 @@ class LocalNodeExecutor extends LocalExecutionBase  implements NodeExecutor, Des
     public static final String FWK_PROP_PREFIX = "framework."
     public static final String SUDO_PASSWORD = "sudo-password-path"
     public static final String DRY_RUN = "dryRun"
+    public static final String LOGIN = "login"
 
     final static Map<String, Object> renderingOptionsAuthenticationPassword = LocalUtil.getRenderOpt(false, true)
 
@@ -41,6 +42,13 @@ class LocalNodeExecutor extends LocalExecutionBase  implements NodeExecutor, Des
                                                                                 .renderingOptions(renderingOptionsAuthenticationPassword)
                                                                                 .build())
                                                        .property(PropertyBuilder.builder()
+                                                                                .booleanType(LOGIN)
+                                                                                .title("Login")
+                                                                                .description("Use login shell?")
+                                                                                .required(false)
+                                                                                .defaultValue("false")
+                                                                                .build())
+                                                       .property(PropertyBuilder.builder()
                                                                                 .booleanType(DRY_RUN)
                                                                                 .title("Dry Run")
                                                                                 .description("Dry Run?")
@@ -54,6 +62,9 @@ class LocalNodeExecutor extends LocalExecutionBase  implements NodeExecutor, Des
 
         builder.mapping(DRY_RUN, PROJ_PROP_PREFIX + DRY_RUN)
         builder.frameworkMapping(DRY_RUN, FWK_PROP_PREFIX + DRY_RUN)
+
+        builder.mapping(LOGIN, PROJ_PROP_PREFIX + LOGIN)
+        builder.frameworkMapping(LOGIN, FWK_PROP_PREFIX + LOGIN)
 
         return builder.build()
     }
@@ -93,6 +104,12 @@ class LocalNodeExecutor extends LocalExecutionBase  implements NodeExecutor, Des
                                                                 node,
                                                                 context.getFramework().getFrameworkProjectMgr().getFrameworkProject(context.getFrameworkProject()),
                                                                 context.getFramework())
+
+        login = ResolverUtil.resolveBooleanProperty(LOGIN,
+                                        false,
+                                                    node,
+                                                    context.getFramework().getFrameworkProjectMgr().getFrameworkProject(context.getFrameworkProject()),
+                                                    context.getFramework())
 
 
         logger.log(dryRun?2:5, "[debug] Running Command: " + command + " as user " + username)

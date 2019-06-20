@@ -10,7 +10,10 @@ class LocalExecutionBase {
     String username
     String shell
     ExecutionListener logger
+    Boolean login
     String rdeckBase
+
+
     def process(String[] command){
         return this.process(command.join(' '))
     }
@@ -57,7 +60,7 @@ class LocalExecutionBase {
 
             //running file as username
             commandArray = []
-            commandArray.addAll(LocalUtil.buildSudoCommand(shell, username, file.absolutePath))
+            commandArray.addAll(LocalUtil.buildSudoCommand(shell, username, file.absolutePath, login))
         }
 
         logger.log(5,"[debug] Running command : "+ commandArray.toString())

@@ -38,6 +38,13 @@ class LocalCommandStep extends LocalExecutionBase implements StepPlugin, Describ
                                                           .renderingOptions(renderingOptionsAuthenticationPassword)
                                                           .build())
                                  .property(PropertyBuilder.builder()
+                                                        .booleanType("login")
+                                                        .title("Login")
+                                                        .description("Use login shell?")
+                                                        .required(false)
+                                                        .defaultValue("false")
+                                                        .build())
+                                 .property(PropertyBuilder.builder()
                                                           .booleanType("dryRun")
                                                           .title("Dry Run")
                                                           .description("Dry Run?")
@@ -55,6 +62,7 @@ class LocalCommandStep extends LocalExecutionBase implements StepPlugin, Describ
 
         String command = configuration.get("command")
         Boolean dryRun = Boolean.valueOf(configuration.get("dryRun"))
+        login = Boolean.valueOf(configuration.get("login"))
         shell="/bin/bash"
 
         String rundeckHostName=context.framework.properties.get("frameworkNodeName")
