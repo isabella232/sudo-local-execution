@@ -43,9 +43,12 @@ class ThreadedStreamHandler extends Thread{
 
                 if(isErrorStream){
                     if(line.contains("Password:") || line.contains("[sudo] password")){
-                        logger.log(5, line)
+                        String message = line.replace("Password:","")
+                        if(message){
+                            logger.log(0,  message)
+                        }
                     }else{
-                        logger.log(0, line)
+                        logger.log(0,line)
                     }
 
                 }else{
