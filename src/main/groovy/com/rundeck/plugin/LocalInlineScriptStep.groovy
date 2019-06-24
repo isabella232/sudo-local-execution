@@ -41,6 +41,12 @@ class LocalInlineScriptStep extends LocalExecutionBase implements StepPlugin, De
                                                           .required(false)
                                                           .renderingOptions(renderingOptionsAuthenticationPassword)
                                                           .build())
+                                 .property(PropertyBuilder.builder()
+                                                          .string("login")
+                                                          .title("Login")
+                                                          .description("Use login shell?")
+                                                          .required(false)
+                                                          .build())
                                  .build()
     }
 
@@ -50,7 +56,7 @@ class LocalInlineScriptStep extends LocalExecutionBase implements StepPlugin, De
         this.rdeckBase = context.framework.properties.get("baseDir")
 
         String script = configuration.get("script")
-
+        login = Boolean.valueOf(configuration.get("login"))
         shell="/bin/bash"
 
         String rundeckHostName=context.framework.properties.get("frameworkNodeName")
