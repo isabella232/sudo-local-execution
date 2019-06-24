@@ -1,6 +1,6 @@
 # Sudo Local Execution
 
-This is a local execution plugin that allows run commands or scripts using a different user than then rundeck system account.
+This is a local execution plugin that allows run commands or scripts using a different user than then rundeck system account (using sudo command).
 It contains 4 different plugins:
 
 ## Local Node Executor and Local File Copier
