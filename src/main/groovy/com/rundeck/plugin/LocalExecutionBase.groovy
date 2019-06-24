@@ -14,12 +14,13 @@ class LocalExecutionBase {
     String rdeckBase
 
 
-    def process(String[] command){
-        return this.process(command.join(' '))
+    def process(String[] command, Map<String, String> env = null){
+        return this.process(command.join(' '), env)
     }
 
-    def process(String command){
+    def process(String command, Map<String, String> env= null){
         File file = LocalUtil.createTempScriptFile(rdeckBase, command)
+
 
         def commandArray = this.setExecutionPermissions(file,
                                                         username,
@@ -30,6 +31,12 @@ class LocalExecutionBase {
         def commander = new CommandBuilder().sudoPassword(sudoPassword)
                                             .sudoIsRequested(sudoIsRequested)
                                             .logger(logger)
+
+
+        if(env!=null){
+
+            commander = commander.environmentVariables(env)
+        }
 
         int exitValue = commander.runCommand(commandArray)
 

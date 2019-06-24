@@ -1,6 +1,7 @@
 package com.rundeck.plugin
 
 import com.dtolabs.rundeck.core.common.INodeEntry
+import com.dtolabs.rundeck.core.dispatcher.DataContextUtils
 import com.dtolabs.rundeck.core.execution.ExecutionContext
 import com.dtolabs.rundeck.core.execution.ExecutionLogger
 import com.dtolabs.rundeck.core.execution.service.NodeExecutor
@@ -130,7 +131,12 @@ class LocalNodeExecutor extends LocalExecutionBase  implements NodeExecutor, Des
         }
 
         if(!dryRun){
-            int exitValue = process(command)
+            Map<String, Map<String, String>> nodeData = DataContextUtils.addContext("node",
+                    DataContextUtils.nodeData(node),
+                    context.getDataContext());
+
+            Map<String, String> env = DataContextUtils.generateEnvVarsFromContext(nodeData);
+            int exitValue = process(command, env)
 
             if(exitValue!=0){
                 return NodeExecutorResultImpl.createFailure(

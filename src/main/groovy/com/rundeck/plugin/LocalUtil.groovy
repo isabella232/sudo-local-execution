@@ -44,8 +44,10 @@ class LocalUtil {
     }
 
     static def buildSudoCommand(String shell, String username, String command, Boolean login){
-        def sudoCommand = "/usr/bin/sudo ${login?"-i":""} -k -S -u ${username} ${command}".toString()
+        def sudoCommand = "/usr/bin/sudo -E ${login?"-i":""} -k -S -u ${username} ${command}".toString()
         return [shell, "-c", sudoCommand]
+
+
 
     }
 
